@@ -46,6 +46,32 @@ function onFormSubmit(event) {
       Notiflix.Notify.failure('Error');
     }
   }
+
+  getUser(word).then(renderGallary);
+}
+
+// ___________FUNCTIONS__________________________
+
+function renderGallary(word) {
+  //  const words = word.map(
+  //    ({ name, capital, population, flags, languages }) => ({
+  //      name: name.official,
+  //      capital: capital[0],
+  //      population,
+  //      flag: flags.svg,
+  //      languages: Object.values(languages),
+  //    })
+  //  );
+  //   const {
+  //     webformatURL: ,
+  //     largeImageURL,
+  //     tags,
+  //     likes,
+  //     views,
+  //     comments,
+  //     downloads,
+  //   } = word;
+  //   console.log(word);
 }
 
 // var API_KEY = '31808257-b1d1bead71ab6681d9f118ecf';
