@@ -47,31 +47,40 @@ function onFormSubmit(event) {
     }
   }
 
-  getUser(word).then(renderGallary);
+  //   getUser(word).then(renderGallary);
 }
 
 // ___________FUNCTIONS__________________________
 
-function renderGallary(word) {
-  //  const words = word.map(
-  //    ({ name, capital, population, flags, languages }) => ({
-  //      name: name.official,
-  //      capital: capital[0],
-  //      population,
-  //      flag: flags.svg,
-  //      languages: Object.values(languages),
-  //    })
-  //  );
-  //   const {
-  //     webformatURL: ,
-  //     largeImageURL,
-  //     tags,
-  //     likes,
-  //     views,
-  //     comments,
-  //     downloads,
-  //   } = word;
-  //   console.log(word);
+function renderGallary(image) {
+  const {
+    webformatURL,
+    largeImageURL,
+    tags,
+    likes,
+    views,
+    comments,
+    downloads,
+  } = image;
+  return `<div class="photo-card">
+  <a href="${largeImageURL}">
+  <img class="photo" src="${webformatURL}" alt="${tags}" title="${tags}" loading="lazy" />
+  <div class="info">
+    <p class="info-item">
+      <b>Likes</b>${likes}
+    </p>
+    <p class="info-item">
+      <b>Views</b>${views}
+    </p>
+    <p class="info-item">
+      <b>Comments</b>${comments}
+    </p>
+    <p class="info-item">
+      <b>Downloads</b>${downloads}
+    </p>
+  </div>
+  </a>
+</div>`;
 }
 
 // var API_KEY = '31808257-b1d1bead71ab6681d9f118ecf';
