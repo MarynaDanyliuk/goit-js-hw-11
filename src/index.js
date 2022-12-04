@@ -4,6 +4,9 @@ import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
+const API_KEY = '31808257-b1d1bead71ab6681d9f118ecf';
+const BASE_URL = 'https://pixabay.com/api/';
+
 const refs = {
   form: document.querySelector(`.form`),
   button: document.querySelector(`.search-button`),
@@ -14,22 +17,50 @@ refs.form.addEventListener(`submit`, onFormSubmit);
 
 function onFormSubmit(event) {
   event.preventDefault();
+
   const word = refs.form.searchQuery.value;
+
   console.log(word);
+
+  getUser(word);
+
   async function getUser(word) {
     try {
       const response = await axios.get(
-        `pixabay.com/api/?key=31808257-b1d1bead71ab6681d9f118ecf&q=${word}&image_type=photo&orientation=horizontal&safesearch=true`
+        `` +
+          BASE_URL +
+          `?key=` +
+          API_KEY +
+          `&q=${word}&image_type=photo&orientation=horizontal&safesearch=true`
       );
-      console.log(response);
+
+      if (response.data.hits.length === 0) {
+        Notiflix.Notify.failure(
+          'Sorry, there are no images matching your search query. Please try again.'
+        );
+        return;
+      } else if (response.data.hits !== 0) {
+        console.log(response.data.hits);
+      }
     } catch (error) {
-      Notiflix.Notify.failure(
-        'Sorry, there are no images matching your search query. Please try again.'
-      );
+      Notiflix.Notify.failure('Error');
     }
   }
-  getUser();
 }
+
+// var API_KEY = '31808257-b1d1bead71ab6681d9f118ecf';
+// var URL =
+//   'https://pixabay.com/api/?key=' +
+//   API_KEY +
+//   '&q=' +
+//   encodeURIComponent('red roses');
+// $.getJSON(URL, function (data) {
+//   if (parseInt(data.totalHits) > 0)
+//     $.each(data.hits, function (i, hit) {
+//       console.log(hit.pageURL);
+//     });
+//   else console.log('No hits');
+// });
 
 // axios
 //   .get(
