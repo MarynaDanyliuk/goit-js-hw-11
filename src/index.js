@@ -22,7 +22,7 @@ function onFormSubmit(event) {
 
   console.log(word);
 
-  getUser(word);
+  getUser(word).then(renderGallary);
 
   async function getUser(word) {
     try {
@@ -39,20 +39,17 @@ function onFormSubmit(event) {
           'Sorry, there are no images matching your search query. Please try again.'
         );
         return;
-      } else if (response.data.hits !== 0) {
-        console.log(response.data.hits);
       }
+      const images = response.data.hits;
+      return images;
+      //   console.log(images);
     } catch (error) {
       Notiflix.Notify.failure('Error');
     }
   }
-
-  //   getUser(word).then(renderGallary);
 }
 
-// ___________FUNCTIONS__________________________
-
-function renderGallary(image) {
+function renderGallary(images) {
   const {
     webformatURL,
     largeImageURL,
@@ -61,27 +58,68 @@ function renderGallary(image) {
     views,
     comments,
     downloads,
-  } = image;
-  return `<div class="photo-card">
-  <a href="${largeImageURL}">
-  <img class="photo" src="${webformatURL}" alt="${tags}" title="${tags}" loading="lazy" />
-  <div class="info">
-    <p class="info-item">
-      <b>Likes</b>${likes}
-    </p>
-    <p class="info-item">
-      <b>Views</b>${views}
-    </p>
-    <p class="info-item">
-      <b>Comments</b>${comments}
-    </p>
-    <p class="info-item">
-      <b>Downloads</b>${downloads}
-    </p>
-  </div>
-  </a>
-</div>`;
+  } = images;
+  // console.log(images);
+
+  const listImages = images.map(
+    ({
+      webformatURL,
+      largeImageURL,
+      tags,
+      likes,
+      views,
+      comments,
+      downloads,
+    }) => ({
+      webformatURL,
+      largeImageURL,
+      tags,
+      likes,
+      views,
+      comments,
+      downloads,
+    })
+  );
+  // console.log(listImages);
+  const markup = listImages
+    .map(image => {
+      return `<div class="photo-card">
+    <a href="${largeImageURL}">
+    <img class="photo" src="${webformatURL}" alt="${tags}" title="${tags}" loading="lazy" />
+    <div class="info">
+      <p class="info-item">
+        <b>Likes</b>${likes}
+      </p>
+      <p class="info-item">
+        <b>Views</b>${views}
+      </p>
+      <p class="info-item">
+        <b>Comments</b>${comments}
+      </p>
+      <p class="info-item">
+        <b>Downloads</b>${downloads}
+      </p>
+    </div>
+    </a>
+  </div>`;
+    })
+    .join(``);
+  refs.gallery.innerHTML = markup;
 }
+
+function clearElements() {
+  refs.form.innerHTML = '';
+  refs.gallery.innerHTML = '';
+}
+
+// else if (response.data.hits !== 0) {
+//         const images = response.data.hits;
+//         console.log(images);
+//       }
+
+// ___________FUNCTIONS__________________________
+
+//   console.log(images);
 
 // var API_KEY = '31808257-b1d1bead71ab6681d9f118ecf';
 // var URL =
@@ -123,20 +161,20 @@ function renderGallary(image) {
 // comments - кількість коментарів.
 // downloads - кількість завантажень.
 
-https: `<div class="photo-card">
-  <img src="" alt="" loading="lazy" />
-  <div class="info">
-    <p class="info-item">
-      <b>Likes</b>
-    </p>
-    <p class="info-item">
-      <b>Views</b>
-    </p>
-    <p class="info-item">
-      <b>Comments</b>
-    </p>
-    <p class="info-item">
-      <b>Downloads</b>
-    </p>
-  </div>
-</div>`;
+// https: `<div class="photo-card">
+//   <img src="" alt="" loading="lazy" />
+//   <div class="info">
+//     <p class="info-item">
+//       <b>Likes</b>
+//     </p>
+//     <p class="info-item">
+//       <b>Views</b>
+//     </p>
+//     <p class="info-item">
+//       <b>Comments</b>
+//     </p>
+//     <p class="info-item">
+//       <b>Downloads</b>
+//     </p>
+//   </div>
+// </div>`;
