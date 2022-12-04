@@ -1,1 +1,30 @@
 @import '~node_modules/modern-normalize/modern-normalize.css';
+
+// .container {
+//   margin-left: 5px;
+//   margin-right: 5px;
+// }
+
+.form {
+  display: flex;
+  justify-content: center;
+  padding: 5px 0;
+
+  background-color: cornflowerblue;
+}
+
+#search-input {
+  height: 30px;
+  width: 300px;
+  border: transparent;
+  border-bottom-left-radius: 3;
+  border-top-left-radius: 3;
+}
+
+.search-button {
+  border: transparent;
+  cursor: pointer;
+  min-width: 30px;
+  border-bottom-right-radius: 3;
+  border-top-right-radius: 3;
+}
