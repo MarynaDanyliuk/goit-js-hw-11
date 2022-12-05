@@ -7,6 +7,7 @@
   justify-content: center;
   margin-left: auto;
   margin-right: auto;
+  padding-top: 30px;
 }
 
 .gallery__link {
@@ -38,6 +39,8 @@
 
 .info {
   display: flex;
+  justify-content: space-between;
+  padding: 0 5px;
   // border: 1px solid #eeeeee;
   border-top: none;
   // padding: 10px 24px;
@@ -46,9 +49,14 @@
 .info-item {
   display: flex;
   flex-direction: column;
-  margin: 5px;
-  font-size: smaller;
+  // font-size: smaller;
+  align-items: center;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
+
+// .info-item b {
+//   text-decoration: none;
+// }
 
 // .gallery__thumb {
 //   // display: flex;
