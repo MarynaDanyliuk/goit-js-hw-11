@@ -22,9 +22,9 @@ function onFormSubmit(event) {
 
   console.log(word);
 
-  getUser(word).then(renderGallary);
+  getImages(word).then(renderGallary);
 
-  async function getUser(word) {
+  async function getImages(word) {
     try {
       const response = await axios.get(
         `` +
@@ -38,6 +38,7 @@ function onFormSubmit(event) {
         Notiflix.Notify.failure(
           'Sorry, there are no images matching your search query. Please try again.'
         );
+        clearGallery();
         return;
       }
       const images = response.data.hits;
@@ -50,65 +51,73 @@ function onFormSubmit(event) {
 }
 
 function renderGallary(images) {
-  const {
-    webformatURL,
-    largeImageURL,
-    tags,
-    likes,
-    views,
-    comments,
-    downloads,
-  } = images;
-  // console.log(images);
-
-  const listImages = images.map(
-    ({
-      webformatURL,
-      largeImageURL,
-      tags,
-      likes,
-      views,
-      comments,
-      downloads,
-    }) => ({
-      webformatURL,
-      largeImageURL,
-      tags,
-      likes,
-      views,
-      comments,
-      downloads,
-    })
-  );
-  // console.log(listImages);
-  const markup = listImages
+  const markup = images
     .map(image => {
-      return `<div class="photo-card">
-    <a href="${largeImageURL}">
-    <img class="photo" src="${webformatURL}" alt="${tags}" title="${tags}" loading="lazy" />
+      return `<div class="galery__card">
+    <a class="gallery__link" href="${image.largeImageURL}">
+    <img class="gallery__image" src="${image.webformatURL}" alt="${image.tags}" title="${image.tags}" loading="lazy" />
     <div class="info">
       <p class="info-item">
-        <b>Likes</b>${likes}
+        <b>Likes</b>${image.likes}
       </p>
       <p class="info-item">
-        <b>Views</b>${views}
+        <b>Views</b>${image.views}
       </p>
       <p class="info-item">
-        <b>Comments</b>${comments}
+        <b>Comments</b>${image.comments}
       </p>
       <p class="info-item">
-        <b>Downloads</b>${downloads}
+        <b>Downloads</b>${image.downloads}
       </p>
     </div>
     </a>
   </div>`;
     })
     .join(``);
+  // console.log(markup);
   refs.gallery.innerHTML = markup;
+  lightbox.refresh();
 }
 
-function clearElements() {
-  refs.form.innerHTML = '';
+refs.gallery.addEventListener(`click`, onGalleryClick);
+
+let ImgActive = null;
+
+function onGalleryClick(event) {
+  event.preventDefault();
+
+  if (event.target.nodeName !== `IMG`) {
+    return;
+  }
+
+  const CurrentActiveImg = document.querySelector(`.img--active`);
+  console.log(CurrentActiveImg);
+
+  if (CurrentActiveImg) {
+    event.target.classList.remove(`.img--active`);
+  }
+
+  const nextImgActive = event.target;
+  nextImgActive.classList.add(`.img--active`);
+  console.log(event.target);
+
+  ImgActive = nextImgActive.getAttribute(`src`);
+  console.log(ImgActive);
+}
+
+var lightbox = new SimpleLightbox(`.gallery a`, {
+  captionsData: `alt`,
+  captionPosition: `bottom`,
+  captionDelay: `250 ms`,
+});
+
+// const getGalleryItem =
+//   galleryItems => `<a class="gallery__item" href="${galleryItems.original}">
+// <img class="gallery__image" src="${galleryItems.preview}" alt="${galleryItems.description}" />
+// </a>`;
+
+function clearGallery() {
+  // refs.form.searchQuery.innerHTML = '';
   refs.gallery.innerHTML = '';
 }
 
@@ -118,6 +127,17 @@ function clearElements() {
 //       }
 
 // ___________FUNCTIONS__________________________
+
+// const {
+//   webformatURL,
+//   largeImageURL,
+//   tags,
+//   likes,
+//   views,
+//   comments,
+//   downloads,
+// } = images;
+// console.log(images);
 
 //   console.log(images);
 
@@ -178,3 +198,25 @@ function clearElements() {
 //     </p>
 //   </div>
 // </div>`;
+
+// _____________NOTES_______________________
+// const listImages = images.map(
+//   ({
+//     webformatURL,
+//     largeImageURL,
+//     tags,
+//     likes,
+//     views,
+//     comments,
+//     downloads,
+//   }) => ({
+//     webformatURL,
+//     largeImageURL,
+//     tags,
+//     likes,
+//     views,
+//     comments,
+//     downloads,
+//   })
+// );
+// console.log(listImages);
