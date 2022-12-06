@@ -4,6 +4,17 @@
 //   margin-left: 5px;
 //   margin-right: 5px;
 // }
+body {
+  font-family: 'Montserrat', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: 0.03em;
+}
+
+a {
+  text-decoration: none;
+}
 
 .form {
   display: flex;
