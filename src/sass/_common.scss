@@ -1,9 +1,5 @@
 @import '~node_modules/modern-normalize/modern-normalize.css';
 
-// .container {
-//   margin-left: 5px;
-//   margin-right: 5px;
-// }
 body {
   font-family: 'Montserrat', sans-serif;
   font-style: normal;
@@ -16,9 +12,29 @@ a {
   text-decoration: none;
 }
 
+.container {
+  position: relative;
+
+  // padding-bottom: 30px;
+  // z-index: 1;
+  // top: 0;
+  // left: 0;
+  width: 100vw;
+  // height: 200vw;
+  // background-color: cornflowerblue;
+  // box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.12), 0px 4px 4px rgba(0, 0, 0, 0.06),
+  //   1px 4px 6px rgba(0, 0, 0, 0.16);
+}
+
 .form {
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
   display: flex;
   justify-content: center;
+
   padding: 5px 0;
 
   background-color: cornflowerblue;

@@ -3,6 +3,7 @@ import axios from 'axios';
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+// import {getImages} from './apiService';
 
 const API_KEY = '31808257-b1d1bead71ab6681d9f118ecf';
 const BASE_URL = 'https://pixabay.com/api/';
@@ -11,12 +12,16 @@ const refs = {
   form: document.querySelector(`.form`),
   button: document.querySelector(`.search-button`),
   gallery: document.querySelector(`.gallery`),
+  buttonLoadMore: document.querySelector(`.load-more`),
 };
 
 refs.form.addEventListener(`submit`, onFormSubmit);
 
 function onFormSubmit(event) {
   event.preventDefault();
+
+  // showButtonLoad();
+  refs.buttonLoadMore.classList.remove(`not-visible`);
 
   const word = refs.form.searchQuery.value;
 
@@ -31,7 +36,8 @@ function onFormSubmit(event) {
           BASE_URL +
           `?key=` +
           API_KEY +
-          `&q=${word}&image_type=photo&orientation=horizontal&safesearch=true`
+          `&q=${word}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40`
+        // options
       );
 
       if (response.data.hits.length === 0) {
@@ -79,6 +85,12 @@ function renderGallary(images) {
   lightbox.refresh();
 }
 
+function showButtonLoad() {
+  refs.buttonLoadMore.classList.remove(`not-visible`);
+}
+
+// console.log(refs.buttonLoadMore.classList);
+
 refs.gallery.addEventListener(`click`, onGalleryClick);
 
 let ImgActive = null;
@@ -110,6 +122,13 @@ var lightbox = new SimpleLightbox(`.gallery a`, {
   captionPosition: `bottom`,
   captionDelay: `250 ms`,
 });
+
+refs.buttonLoadMore.addEventListener(`click`, onButtonLoadMoreClick);
+
+function onButtonLoadMoreClick(event) {
+  event.preventDefault();
+  // const buttonLoadMoreHidden = document.querySelector(`.not-visible`);
+}
 
 function clearGallery() {
   refs.gallery.innerHTML = '';
