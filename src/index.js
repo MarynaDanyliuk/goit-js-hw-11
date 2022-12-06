@@ -111,20 +111,9 @@ var lightbox = new SimpleLightbox(`.gallery a`, {
   captionDelay: `250 ms`,
 });
 
-// const getGalleryItem =
-//   galleryItems => `<a class="gallery__item" href="${galleryItems.original}">
-// <img class="gallery__image" src="${galleryItems.preview}" alt="${galleryItems.description}" />
-// </a>`;
-
 function clearGallery() {
-  // refs.form.searchQuery.innerHTML = '';
   refs.gallery.innerHTML = '';
 }
-
-// else if (response.data.hits !== 0) {
-//         const images = response.data.hits;
-//         console.log(images);
-//       }
 
 // ___________FUNCTIONS__________________________
 
