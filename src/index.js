@@ -57,17 +57,17 @@ function renderGallary(images) {
     <a class="gallery__link" href="${image.largeImageURL}">
     <img class="gallery__image" src="${image.webformatURL}" alt="${image.tags}" title="${image.tags}" loading="lazy" />
     <div class="info">
-      <p class="info-item">
-        <b class="info-item-name">Likes</b>${image.likes}
+      <p class="info__item">
+        <b class="info__item-name">Likes</b>${image.likes}
       </p>
-      <p class="info-item">
-        <b class="info-item-name">Views</b>${image.views}
+      <p class="info__item">
+        <b class="info__item-name">Views</b>${image.views}
       </p>
-      <p class="info-item">
-        <b class="info-item-name">Comments</b>${image.comments}
+      <p class="info__item">
+        <b class="info__item-name">Comments</b>${image.comments}
       </p>
-      <p class="info-item">
-        <b class="info-item-name">Downloads</b>${image.downloads}
+      <p class="info__item">
+        <b class="info__item-name">Downloads</b>${image.downloads}
       </p>
     </div>
     </a>
