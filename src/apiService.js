@@ -7,7 +7,7 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 // const API_KEY = '31808257-b1d1bead71ab6681d9f118ecf';
 // const BASE_URL = 'https://pixabay.com/api/';
 
-export default class getImagesApiService {
+export default class GetImagesApiService {
   constructor() {}
 
   async fetchImages(word) {
