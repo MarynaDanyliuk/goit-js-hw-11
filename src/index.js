@@ -4,12 +4,12 @@ import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 // import {getImagesApiService} from `./apiService`;
-import getImagesApiService from './apiService';
+import GetImagesApiService from './apiService';
 
 const API_KEY = '31808257-b1d1bead71ab6681d9f118ecf';
 const BASE_URL = 'https://pixabay.com/api/';
 
-const GetImagesApiService = new getImagesApiService();
+const getImagesApiService = new GetImagesApiService();
 
 const refs = {
   form: document.querySelector(`.form`),
@@ -34,7 +34,7 @@ function onFormSubmit(event) {
 
   // getImages(word).then(renderGallary);
 
-  new getImagesApiService().fetchImages(word).then(renderGallary);
+  getImagesApiService.fetchImages(word).then(renderGallary);
 
   // async function getImages(word) {
   //   try {
@@ -133,26 +133,14 @@ var lightbox = new SimpleLightbox(`.gallery a`, {
 refs.buttonLoadMore.addEventListener(`click`, onButtonLoadMoreClick);
 
 function onButtonLoadMoreClick(event) {
-  // event.preventDefault();
+  event.preventDefault();
   console.log(`Жмем кнопку`);
-  new getImagesApiService().fetchImages(word).then(renderGallary);
+  getImagesApiService.fetchImages(word).then(renderGallary);
   // const buttonLoadMoreHidden = document.querySelector(`.not-visible`);
 }
 
 function clearGallery() {
   refs.gallery.innerHTML = '';
-}
-
-function test() {
-  console.log(`Слава Україні!`);
-}
-
-function test() {
-  console.log(`Слава Україні!`);
-}
-
-function test() {
-  console.log(`Слава Україні!`);
 }
 
 // ___________FUNCTIONS__________________________
