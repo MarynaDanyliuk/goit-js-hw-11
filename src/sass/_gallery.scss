@@ -1,3 +1,8 @@
+:root {
+  --timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  --animation-duration: 250ms;
+}
+
 .gallery {
   // position: absolute;
   position: relative;
@@ -91,6 +96,10 @@
 
   &:hover,
   &:focus {
+    background-color: rgba(127, 170, 230, 0.5);
+  }
+
+  &:active {
     background-color: cornflowerblue;
   }
 }
