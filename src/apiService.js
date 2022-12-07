@@ -1,5 +1,5 @@
 import axios from 'axios';
-const axios = require('axios');
+// const axios = require('axios');
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
@@ -11,7 +11,7 @@ export default class GetImagesApiService {
   }
 
   async fetchImages(word) {
-    console.log(this);
+    console.log(`До запроса наш объект`, this);
     const API_KEY = '31808257-b1d1bead71ab6681d9f118ecf';
     const BASE_URL = 'https://pixabay.com/api/';
     const response = await axios.get(
@@ -31,6 +31,7 @@ export default class GetImagesApiService {
 
     if (response.data.hits) {
       this.page += 1;
+      console.log(`После запроса, если все ок - наш объект`, this);
     }
     const images = response.data.hits;
     return images;
