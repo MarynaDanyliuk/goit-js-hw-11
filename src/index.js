@@ -9,7 +9,7 @@ import getImagesApiService from './apiService';
 const API_KEY = '31808257-b1d1bead71ab6681d9f118ecf';
 const BASE_URL = 'https://pixabay.com/api/';
 
-const getImagesApiService = new getImagesApiService();
+// const getImagesApiService = new getImagesApiService();
 
 const refs = {
   form: document.querySelector(`.form`),
