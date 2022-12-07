@@ -28,7 +28,9 @@ function onFormSubmit(event) {
   // showButtonLoad();
   refs.buttonLoadMore.classList.remove(`not-visible`);
 
-  word = refs.form.searchQuery.value;
+  // getImagesApiService.query = refs.form.searchQuery.value;
+
+  getImagesApiService.query = event.currentTarget.elements.searchQuery.value;
 
   console.log(word);
 

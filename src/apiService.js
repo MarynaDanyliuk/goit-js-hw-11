@@ -1,16 +1,17 @@
 import axios from 'axios';
-// const axios = require('axios');
+const axios = require('axios');
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-// const API_KEY = '31808257-b1d1bead71ab6681d9f118ecf';
-// const BASE_URL = 'https://pixabay.com/api/';
-
 export default class GetImagesApiService {
-  constructor() {}
+  constructor() {
+    this.word = ``;
+    this.page = 1;
+  }
 
   async fetchImages(word) {
+    console.log(this);
     const API_KEY = '31808257-b1d1bead71ab6681d9f118ecf';
     const BASE_URL = 'https://pixabay.com/api/';
     const response = await axios.get(
@@ -18,8 +19,7 @@ export default class GetImagesApiService {
         BASE_URL +
         `?key=` +
         API_KEY +
-        `&q=${word}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40`
-      // options
+        `&q=${this.word}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${this.page}`
     );
     if (response.data.hits.length === 0) {
       Notiflix.Notify.failure(
@@ -28,12 +28,23 @@ export default class GetImagesApiService {
       clearGallery();
       return;
     }
+
+    if (response.data.hits) {
+      this.page += 1;
+    }
     const images = response.data.hits;
     return images;
-    //   console.log(images);
   }
   catch(error) {
     Notiflix.Notify.failure('Error');
+  }
+
+  get query() {
+    return this.word;
+  }
+
+  set query(newWord) {
+    return (this.word = newWord);
   }
 }
 
