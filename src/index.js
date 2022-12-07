@@ -133,7 +133,7 @@ var lightbox = new SimpleLightbox(`.gallery a`, {
 refs.buttonLoadMore.addEventListener(`click`, onButtonLoadMoreClick);
 
 function onButtonLoadMoreClick(event) {
-  event.preventDefault();
+  // event.preventDefault();
   console.log(`Жмем кнопку`);
   new getImagesApiService().fetchImages(word).then(renderGallary);
   // const buttonLoadMoreHidden = document.querySelector(`.not-visible`);
@@ -141,6 +141,10 @@ function onButtonLoadMoreClick(event) {
 
 function clearGallery() {
   refs.gallery.innerHTML = '';
+}
+
+function test() {
+  console.log(`Слава Україні!`);
 }
 
 // ___________FUNCTIONS__________________________
