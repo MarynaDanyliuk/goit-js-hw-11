@@ -147,6 +147,14 @@ function test() {
   console.log(`Слава Україні!`);
 }
 
+function test() {
+  console.log(`Слава Україні!`);
+}
+
+function test() {
+  console.log(`Слава Україні!`);
+}
+
 // ___________FUNCTIONS__________________________
 
 // const {
