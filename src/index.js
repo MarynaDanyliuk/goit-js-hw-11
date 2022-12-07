@@ -3,10 +3,13 @@ import axios from 'axios';
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-// import {getImages} from './apiService';
+// import {getImagesApiService} from `./apiService`;
+import getImagesApiService from './apiService';
 
 const API_KEY = '31808257-b1d1bead71ab6681d9f118ecf';
 const BASE_URL = 'https://pixabay.com/api/';
+
+const getImagesApiService = new getImagesApiService();
 
 const refs = {
   form: document.querySelector(`.form`),
@@ -17,43 +20,47 @@ const refs = {
 
 refs.form.addEventListener(`submit`, onFormSubmit);
 
+let word = ``;
+
 function onFormSubmit(event) {
   event.preventDefault();
 
   // showButtonLoad();
   refs.buttonLoadMore.classList.remove(`not-visible`);
 
-  const word = refs.form.searchQuery.value;
+  word = refs.form.searchQuery.value;
 
   console.log(word);
 
-  getImages(word).then(renderGallary);
+  // getImages(word).then(renderGallary);
 
-  async function getImages(word) {
-    try {
-      const response = await axios.get(
-        `` +
-          BASE_URL +
-          `?key=` +
-          API_KEY +
-          `&q=${word}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40`
-        // options
-      );
+  new getImagesApiService().fetchImages(word).then(renderGallary);
 
-      if (response.data.hits.length === 0) {
-        Notiflix.Notify.failure(
-          'Sorry, there are no images matching your search query. Please try again.'
-        );
-        clearGallery();
-        return;
-      }
-      const images = response.data.hits;
-      return images;
-      //   console.log(images);
-    } catch (error) {
-      Notiflix.Notify.failure('Error');
-    }
-  }
+  // async function getImages(word) {
+  //   try {
+  //     const response = await axios.get(
+  //       `` +
+  //         BASE_URL +
+  //         `?key=` +
+  //         API_KEY +
+  //         `&q=${word}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40`
+  //       // options
+  //     );
+
+  //     if (response.data.hits.length === 0) {
+  //       Notiflix.Notify.failure(
+  //         'Sorry, there are no images matching your search query. Please try again.'
+  //       );
+  //       clearGallery();
+  //       return;
+  //     }
+  //     const images = response.data.hits;
+  //     return images;
+  //     //   console.log(images);
+  //   } catch (error) {
+  //     Notiflix.Notify.failure('Error');
+  //   }
+  // }
 }
 
 function renderGallary(images) {
@@ -127,6 +134,8 @@ refs.buttonLoadMore.addEventListener(`click`, onButtonLoadMoreClick);
 
 function onButtonLoadMoreClick(event) {
   event.preventDefault();
+  console.log(`Жмем кнопку`);
+  new getImagesApiService().fetchImages(word).then(renderGallary);
   // const buttonLoadMoreHidden = document.querySelector(`.not-visible`);
 }
 
