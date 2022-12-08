@@ -30,7 +30,7 @@ export default class GetImagesApiService {
     }
 
     if (response.data.hits) {
-      this.page += 1;
+      this.incrementPage();
       console.log(`После запроса, если все ок - наш объект`, this);
     }
     const images = response.data.hits;
@@ -38,6 +38,14 @@ export default class GetImagesApiService {
   }
   catch(error) {
     Notiflix.Notify.failure('Error');
+  }
+
+  incrementPage() {
+    this.page += 1;
+  }
+
+  resetPage() {
+    this.page = 1;
   }
 
   get query() {

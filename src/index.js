@@ -31,38 +31,8 @@ function onFormSubmit(event) {
   // getImagesApiService.query = refs.form.searchQuery.value;
 
   getImagesApiService.query = event.currentTarget.elements.searchQuery.value;
-
-  console.log(word);
-
-  // getImages(word).then(renderGallary);
-
+  getImagesApiService.resetPage();
   getImagesApiService.fetchImages(word).then(renderGallary);
-
-  // async function getImages(word) {
-  //   try {
-  //     const response = await axios.get(
-  //       `` +
-  //         BASE_URL +
-  //         `?key=` +
-  //         API_KEY +
-  //         `&q=${word}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40`
-  //       // options
-  //     );
-
-  //     if (response.data.hits.length === 0) {
-  //       Notiflix.Notify.failure(
-  //         'Sorry, there are no images matching your search query. Please try again.'
-  //       );
-  //       clearGallery();
-  //       return;
-  //     }
-  //     const images = response.data.hits;
-  //     return images;
-  //     //   console.log(images);
-  //   } catch (error) {
-  //     Notiflix.Notify.failure('Error');
-  //   }
-  // }
 }
 
 function renderGallary(images) {
@@ -89,7 +59,6 @@ function renderGallary(images) {
   </div>`;
     })
     .join(``);
-  // console.log(markup);
   refs.gallery.innerHTML = markup;
   lightbox.refresh();
 }
@@ -97,8 +66,6 @@ function renderGallary(images) {
 function showButtonLoad() {
   refs.buttonLoadMore.classList.remove(`not-visible`);
 }
-
-// console.log(refs.buttonLoadMore.classList);
 
 refs.gallery.addEventListener(`click`, onGalleryClick);
 
@@ -146,6 +113,32 @@ function clearGallery() {
 }
 
 // ___________FUNCTIONS__________________________
+
+// async function getImages(word) {
+//   try {
+//     const response = await axios.get(
+//       `` +
+//         BASE_URL +
+//         `?key=` +
+//         API_KEY +
+//         `&q=${word}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40`
+//       // options
+//     );
+
+//     if (response.data.hits.length === 0) {
+//       Notiflix.Notify.failure(
+//         'Sorry, there are no images matching your search query. Please try again.'
+//       );
+//       clearGallery();
+//       return;
+//     }
+//     const images = response.data.hits;
+//     return images;
+//     //   console.log(images);
+//   } catch (error) {
+//     Notiflix.Notify.failure('Error');
+//   }
+// }
 
 // const {
 //   webformatURL,
