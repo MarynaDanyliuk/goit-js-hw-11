@@ -120,6 +120,11 @@ function onButtonLoadMoreClick(event) {
   event.preventDefault();
   console.log(`Жмем кнопку`);
   getImagesApiService.fetchImages(word).then(renderGallary);
+
+  if (getImagesApiService.query === ``) {
+    clearGallery();
+    return;
+  }
   // const buttonLoadMoreHidden = document.querySelector(`.not-visible`);
 }
 
