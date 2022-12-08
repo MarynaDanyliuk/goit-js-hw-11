@@ -4,6 +4,13 @@ import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
+const refs = {
+  form: document.querySelector(`.form`),
+  button: document.querySelector(`.search-button`),
+  gallery: document.querySelector(`.gallery`),
+  buttonLoadMore: document.querySelector(`.load-more`),
+};
+
 export default class GetImagesApiService {
   constructor() {
     this.word = ``;
@@ -21,18 +28,21 @@ export default class GetImagesApiService {
         API_KEY +
         `&q=${this.word}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${this.page}`
     );
-    if (response.data.hits.length === 0) {
-      Notiflix.Notify.failure(
-        'Sorry, there are no images matching your search query. Please try again.'
-      );
-      clearGallery();
-      return;
-    }
 
     if (response.data.hits) {
       this.incrementPage();
       console.log(`После запроса, если все ок - наш объект`, this);
     }
+
+    if (response.data.hits.length === 0) {
+      Notiflix.Notify.failure(
+        'Sorry, there are no images matching your search query. Please try again.'
+      );
+      // refs.gallery.innerHTML = '';
+      clearGallery();
+      return;
+    }
+
     const images = response.data.hits;
     return images;
   }

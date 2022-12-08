@@ -25,12 +25,17 @@ let word = ``;
 function onFormSubmit(event) {
   event.preventDefault();
 
-  // showButtonLoad();
-  refs.buttonLoadMore.classList.remove(`not-visible`);
+  showButtonLoad();
+  // refs.buttonLoadMore.classList.remove(`not-visible`);
+  clearGallery();
 
   // getImagesApiService.query = refs.form.searchQuery.value;
-
   getImagesApiService.query = event.currentTarget.elements.searchQuery.value;
+
+  if (getImagesApiService.query === ``) {
+    clearGallery();
+    return;
+  }
   getImagesApiService.resetPage();
   getImagesApiService.fetchImages(word).then(renderGallary);
 }
@@ -61,10 +66,6 @@ function renderGallary(images) {
     .join(``);
   refs.gallery.innerHTML = markup;
   lightbox.refresh();
-}
-
-function showButtonLoad() {
-  refs.buttonLoadMore.classList.remove(`not-visible`);
 }
 
 refs.gallery.addEventListener(`click`, onGalleryClick);
@@ -106,6 +107,10 @@ function onButtonLoadMoreClick(event) {
   console.log(`Жмем кнопку`);
   getImagesApiService.fetchImages(word).then(renderGallary);
   // const buttonLoadMoreHidden = document.querySelector(`.not-visible`);
+}
+
+function showButtonLoad() {
+  refs.buttonLoadMore.classList.remove(`not-visible`);
 }
 
 function clearGallery() {
