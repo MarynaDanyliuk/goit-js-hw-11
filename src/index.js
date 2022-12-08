@@ -37,7 +37,10 @@ function onFormSubmit(event) {
     return;
   }
   getImagesApiService.resetPage();
-  getImagesApiService.fetchImages(word).then(renderGallary);
+  getImagesApiService
+    .fetchImages(word)
+    .then(renderGallary)
+    .then(smoothScrolling);
 }
 
 function renderGallary(images) {
@@ -66,6 +69,17 @@ function renderGallary(images) {
     .join(``);
   refs.gallery.innerHTML = markup;
   lightbox.refresh();
+}
+
+function smoothScrolling() {
+  const { height: cardHeight } = document
+    .querySelector('.gallery')
+    .firstElementChild.getBoundingClientRect();
+
+  window.scrollBy({
+    top: cardHeight * 3,
+    behavior: 'smooth',
+  });
 }
 
 refs.gallery.addEventListener(`click`, onGalleryClick);

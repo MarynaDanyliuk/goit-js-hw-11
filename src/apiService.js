@@ -16,6 +16,7 @@ export default class GetImagesApiService {
     this.word = ``;
     this.page = 1;
     this.per_page = 40;
+    this.totalHits = 500;
   }
 
   async fetchImages(word) {
@@ -27,12 +28,20 @@ export default class GetImagesApiService {
         BASE_URL +
         `?key=` +
         API_KEY +
-        `&q=${this.word}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${this.page}`
+        `&q=${this.word}&image_type=photo&orientation=horizontal&safesearch=true&per_page=${this.per_page}&page=${this.page}`
     );
+    if (this.page === 1) {
+      Notiflix.Notify.success('Hooray! We found 500 images.');
+    }
+
     // console.log(response.data.hits);
     if (response.data.hits) {
       this.incrementPage();
-      console.log(`После запроса, если все ок - наш объект`, this);
+      console.log(
+        `После запроса, если все ок - наш объект`,
+        this
+        // response.data.totalHits
+      );
     }
 
     if (response.data.hits.length === 0) {
@@ -69,6 +78,16 @@ export default class GetImagesApiService {
   resetPage() {
     this.page = 1;
   }
+  // smoothScrolling() {
+  //   const { height: cardHeight } = document
+  //     .querySelector('.gallery')
+  //     .firstElementChild.getBoundingClientRect();
+
+  //   window.scrollBy({
+  //     top: cardHeight * 2,
+  //     behavior: 'smooth',
+  //   });
+  // }
 
   get query() {
     return this.word;
@@ -82,6 +101,10 @@ export default class GetImagesApiService {
 function hideButtonLoad() {
   refs.buttonLoadMore.classList.add(`not-visible`);
 }
+
+// console.log(document.querySelector('.gallery'));
+
+// console.log(document.querySelector('.gallery').getBoundingClientRect());
 
 // export async function getImages(word) {
 //   try {
