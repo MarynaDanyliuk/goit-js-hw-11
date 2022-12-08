@@ -15,6 +15,7 @@ export default class GetImagesApiService {
   constructor() {
     this.word = ``;
     this.page = 1;
+    this.per_page = 40;
   }
 
   async fetchImages(word) {
@@ -28,7 +29,7 @@ export default class GetImagesApiService {
         API_KEY +
         `&q=${this.word}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${this.page}`
     );
-
+    // console.log(response.data.hits);
     if (response.data.hits) {
       this.incrementPage();
       console.log(`После запроса, если все ок - наш объект`, this);
@@ -38,9 +39,20 @@ export default class GetImagesApiService {
       Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
-      // refs.gallery.innerHTML = '';
+
       clearGallery();
       return;
+    }
+    const limitImages = response.data.totalHits;
+
+    console.log(this.page * this.per_page === limitImages);
+
+    if (this.page * this.per_page >= limitImages) {
+      // console.log(`Вы достигли лимита`);
+      hideButtonLoad();
+      Notiflix.Notify.info(
+        `We're sorry, but you've reached the end of search results.`
+      );
     }
 
     const images = response.data.hits;
@@ -65,6 +77,10 @@ export default class GetImagesApiService {
   set query(newWord) {
     return (this.word = newWord);
   }
+}
+
+function hideButtonLoad() {
+  refs.buttonLoadMore.classList.add(`not-visible`);
 }
 
 // export async function getImages(word) {
