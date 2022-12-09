@@ -34,7 +34,6 @@ export default class GetImagesApiService {
       Notiflix.Notify.success('Hooray! We found 500 images.');
     }
 
-    // console.log(response.data.hits);
     if (response.data.hits) {
       this.incrementPage();
       console.log(
@@ -48,7 +47,6 @@ export default class GetImagesApiService {
       Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
-
       clearGallery();
       return;
     }

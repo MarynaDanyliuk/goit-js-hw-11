@@ -27,7 +27,7 @@ function onFormSubmit(event) {
 
   showButtonLoad();
   // refs.buttonLoadMore.classList.remove(`not-visible`);
-  clearGallery();
+  // clearGallery();
 
   // getImagesApiService.query = refs.form.searchQuery.value;
   getImagesApiService.query = event.currentTarget.elements.searchQuery.value;
@@ -37,10 +37,8 @@ function onFormSubmit(event) {
     return;
   }
   getImagesApiService.resetPage();
-  getImagesApiService
-    .fetchImages(word)
-    .then(renderGallary)
-    .then(smoothScrolling);
+  getImagesApiService.fetchImages(word).then(renderGallary);
+  // .then(smoothScrolling);
 }
 
 function renderGallary(images) {
@@ -119,7 +117,11 @@ refs.buttonLoadMore.addEventListener(`click`, onButtonLoadMoreClick);
 function onButtonLoadMoreClick(event) {
   event.preventDefault();
   console.log(`Жмем кнопку`);
-  getImagesApiService.fetchImages(word).then(renderGallary);
+  getImagesApiService.resetPage();
+  getImagesApiService
+    .fetchImages(word)
+    .then(renderGallary)
+    .then(smoothScrolling);
 
   if (getImagesApiService.query === ``) {
     clearGallery();
@@ -130,6 +132,8 @@ function onButtonLoadMoreClick(event) {
 
 function showButtonLoad() {
   refs.buttonLoadMore.classList.remove(`not-visible`);
+  // clearGallery();
+  lightbox.refresh();
 }
 
 function clearGallery() {
