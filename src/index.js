@@ -117,7 +117,7 @@ refs.buttonLoadMore.addEventListener(`click`, onButtonLoadMoreClick);
 function onButtonLoadMoreClick(event) {
   event.preventDefault();
   console.log(`Жмем кнопку`);
-  getImagesApiService.resetPage();
+  // getImagesApiService.resetPage();
   getImagesApiService
     .fetchImages(word)
     .then(renderGallary)
