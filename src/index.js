@@ -13,9 +13,15 @@ const BASE_URL = 'https://pixabay.com/api/';
 
 const getImagesApiService = new GetImagesApiService();
 
+const lightbox = new SimpleLightbox(`.gallery a`, {
+  captionsData: `alt`,
+  captionPosition: `bottom`,
+  captionDelay: `250 ms`,
+});
+
 const refs = {
   form: document.querySelector(`.form`),
-  button: document.querySelector(`.search-button`),
+  // button: document.querySelector(`.search-button`),
   gallery: document.querySelector(`.gallery`),
   buttonLoadMore: document.querySelector(`.load-more`),
 };
@@ -30,54 +36,19 @@ function onFormSubmit(event) {
   // getImagesApiService.query = refs.form.searchQuery.value;
   getImagesApiService.query =
     event.currentTarget.elements.searchQuery.value.trim();
+  getImagesApiService.fetchImages(word).then(images => {
+    renderGallary(images);
+  });
 
   if (getImagesApiService.query === ``) {
     clearGallery();
     hideButtonLoad();
     return;
   }
-  getImagesApiService.resetPage();
-  getImagesApiService.fetchImages(word).then(renderGallary);
-}
+  // getImagesApiService.resetPage();
+  // getImagesApiService.fetchImages(word);
 
-function renderGallary(images) {
-  const markup = images
-    .map(image => {
-      return `<div class="galery__card">
-    <a class="gallery__link" href="${image.largeImageURL}">
-    <img class="gallery__image" src="${image.webformatURL}" alt="${image.tags}" title="${image.tags}" loading="lazy" />
-    <div class="info">
-      <p class="info__item">
-        <b class="info__item-name">Likes</b>${image.likes}
-      </p>
-      <p class="info__item">
-        <b class="info__item-name">Views</b>${image.views}
-      </p>
-      <p class="info__item">
-        <b class="info__item-name">Comments</b>${image.comments}
-      </p>
-      <p class="info__item">
-        <b class="info__item-name">Downloads</b>${image.downloads}
-      </p>
-    </div>
-    </a>
-  </div>`;
-    })
-    .join(``);
-  refs.gallery.innerHTML = markup;
-  lightbox.refresh();
-  showButtonLoad();
-}
-
-function smoothScrolling() {
-  const { height: cardHeight } = document
-    .querySelector('.gallery')
-    .firstElementChild.getBoundingClientRect();
-
-  window.scrollBy({
-    top: -cardHeight * 10,
-    behavior: 'smooth',
-  });
+  // getImagesApiService.fetchImages(word).then(renderGallary);
 }
 
 refs.gallery.addEventListener(`click`, onGalleryClick);
@@ -106,11 +77,97 @@ function onGalleryClick(event) {
   console.log(ImgActive);
 }
 
-var lightbox = new SimpleLightbox(`.gallery a`, {
-  captionsData: `alt`,
-  captionPosition: `bottom`,
-  captionDelay: `250 ms`,
-});
+refs.buttonLoadMore.addEventListener(`click`, onButtonLoadMoreClick);
+
+function onButtonLoadMoreClick(event) {
+  event.preventDefault();
+  console.log(`Жмем кнопку`);
+  getImagesApiService.fetchImages(word).then(images => {
+    renderGallary(images);
+  });
+
+  // getImagesApiService.resetPage();
+  // getImagesApiService
+  //   .fetchImages(word)
+  //   .then(renderGallary)
+  //   .then(smoothScrolling);
+
+  // getImagesApiService.fetchImages(word);
+  // getImagesApiService.renderGallary(images);
+  // smoothScrolling();
+
+  if (getImagesApiService.query === ``) {
+    clearGallery();
+    hideButtonLoad();
+    return;
+  }
+  // const buttonLoadMoreHidden = document.querySelector(`.not-visible`);
+}
+
+// ___________FUNCTIONS_______________
+
+function renderGallary(images) {
+  const markup = images
+    .map(
+      ({
+        webformatURL,
+        likes,
+        views,
+        comments,
+        tags,
+        downloads,
+        largeImageURL,
+      }) => {
+        return `<div class="galery__card">
+    <a class="gallery__link" href="${largeImageURL}">
+    <img class="gallery__image" src="${webformatURL}" alt="${tags}" title="${tags}" loading="lazy" />
+    <div class="info">
+      <p class="info__item">
+        <b class="info__item-name">Likes</b>${likes}
+      </p>
+      <p class="info__item">
+        <b class="info__item-name">Views</b>${views}
+      </p>
+      <p class="info__item">
+        <b class="info__item-name">Comments</b>${comments}
+      </p>
+      <p class="info__item">
+        <b class="info__item-name">Downloads</b>${downloads}
+      </p>
+    </div>
+    </a>
+  </div>`;
+      }
+    )
+    .join(``);
+  refs.gallery.insertAdjacentHTML(`beforeend`, markup);
+  lightbox.refresh();
+  showButtonLoad();
+}
+
+function smoothScrolling() {
+  const { height: cardHeight } = document
+    .querySelector('.gallery')
+    .firstElementChild.getBoundingClientRect();
+
+  window.scrollBy({
+    top: cardHeight * 2,
+    behavior: 'smooth',
+  });
+}
+
+function showButtonLoad() {
+  refs.buttonLoadMore.classList.remove(`not-visible`);
+  // lightbox.refresh();
+}
+
+function hideButtonLoad() {
+  refs.buttonLoadMore.classList.add(`not-visible`);
+}
+
+function clearGallery() {
+  refs.gallery.innerHTML = '';
+}
 
 // let infScroll = new InfiniteScroll(refs.gallery, {
 //   // options
@@ -121,38 +178,6 @@ var lightbox = new SimpleLightbox(`.gallery a`, {
 // });
 
 // console.log(infScroll);
-
-refs.buttonLoadMore.addEventListener(`click`, onButtonLoadMoreClick);
-
-function onButtonLoadMoreClick(event) {
-  event.preventDefault();
-  console.log(`Жмем кнопку`);
-  // getImagesApiService.resetPage();
-  getImagesApiService
-    .fetchImages(word)
-    .then(renderGallary)
-    .then(smoothScrolling);
-
-  if (getImagesApiService.query === ``) {
-    clearGallery();
-    hideButtonLoad();
-    return;
-  }
-  // const buttonLoadMoreHidden = document.querySelector(`.not-visible`);
-}
-
-function showButtonLoad() {
-  refs.buttonLoadMore.classList.remove(`not-visible`);
-  lightbox.refresh();
-}
-
-function hideButtonLoad() {
-  refs.buttonLoadMore.classList.add(`not-visible`);
-}
-
-function clearGallery() {
-  refs.gallery.innerHTML = '';
-}
 
 // console.log(refs.gallery);
 // let elem = document.querySelector('.gallery');
