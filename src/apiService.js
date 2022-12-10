@@ -32,11 +32,6 @@ export default class GetImagesApiService {
 
     const images = response.data.hits;
 
-    // if (images) {
-    //   this.incrementPage();
-    //   console.log(`После запроса, если все ок - наш объект`, this);
-    // }
-
     return images;
   }
 
@@ -47,15 +42,6 @@ export default class GetImagesApiService {
   resetPage() {
     this.page = 1;
   }
-
-  // setLimiteImages() {
-  //   if (this.page * this.per_page >= this.totalHits) {
-  //     Notiflix.Notify.info(
-  //       `We're sorry, but you've reached the end of search results.`
-  //     );
-  //     refs.buttonLoadMore.classList.add(`not-visible`);
-  //   }
-  // }
 
   get query() {
     return this.word;

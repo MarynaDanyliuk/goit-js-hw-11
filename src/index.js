@@ -24,6 +24,8 @@ const refs = {
   buttonLoadMore: document.querySelector(`.load-more`),
 };
 
+// hideButtonLoad();
+
 refs.form.addEventListener(`submit`, onFormSubmit);
 
 let word = ``;
@@ -60,28 +62,28 @@ function onFormSubmit(event) {
     console.log(`После запроса, если все ок - наш объект`, getImagesApiService);
 
     renderGallary(images);
+    showButtonLoad();
   });
 }
 
 refs.buttonLoadMore.addEventListener(`click`, onButtonLoadMoreClick);
 
 function onButtonLoadMoreClick(event) {
-  event.preventDefault();
+  const limit = getImagesApiService.totalHits;
+
+  console.log(getImagesApiService.page * getImagesApiService.per_page);
 
   console.log(getImagesApiService.page);
 
-  getImagesApiService.setLimiteImages;
-
-  const limit = getImagesApiService.totalHits;
-  console.log(getImagesApiService.page * getImagesApiService.per_page);
-  if (getImagesApiService.page * getImagesApiService.per_page >= limit) {
-    Notiflix.Notify.info(
-      `We're sorry, but you've reached the end of search results.`
-    );
-    console.log(`Вы достигли лимита`);
-  }
-
   getImagesApiService.fetchImages(word).then(images => {
+    if (getImagesApiService.page * getImagesApiService.per_page >= limit) {
+      Notiflix.Notify.info(
+        `We're sorry, but you've reached the end of search results.`
+      );
+      console.log(`Вы достигли лимита`);
+      hideButtonLoad();
+    }
+
     getImagesApiService.incrementPage();
     console.log(`После запроса, если все ок - наш объект`, getImagesApiService);
     renderGallary(images);
@@ -153,7 +155,6 @@ function renderGallary(images) {
     .join(``);
   refs.gallery.insertAdjacentHTML(`beforeend`, markup);
   lightbox.refresh();
-  showButtonLoad();
 }
 
 function smoothScrolling() {
