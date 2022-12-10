@@ -10,12 +10,12 @@ var lightbox = new SimpleLightbox(`.gallery a`, {
   captionDelay: `250 ms`,
 });
 
-const refs = {
-  form: document.querySelector(`.form`),
-  // button: document.querySelector(`.search-button`),
-  gallery: document.querySelector(`.gallery`),
-  buttonLoadMore: document.querySelector(`.load-more`),
-};
+// const refs = {
+//   form: document.querySelector(`.form`),
+//   // button: document.querySelector(`.search-button`),
+//   gallery: document.querySelector(`.gallery`),
+//   buttonLoadMore: document.querySelector(`.load-more`),
+// };
 
 export default class GetImagesApiService {
   constructor() {
@@ -44,14 +44,8 @@ export default class GetImagesApiService {
 
     if (images) {
       this.incrementPage();
-      // this.renderGallery(images);
-      // this.showButtonLoad();
 
-      console.log(
-        `После запроса, если все ок - наш объект`,
-        this
-        // response.data.totalHits
-      );
+      console.log(`После запроса, если все ок - наш объект`, this);
     }
 
     // if ((response.data.hits = [])) {
@@ -123,6 +117,8 @@ export default class GetImagesApiService {
   resetPage() {
     this.page = 1;
   }
+
+  check() {}
 
   get query() {
     return this.word;

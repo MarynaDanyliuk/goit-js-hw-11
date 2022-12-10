@@ -21,7 +21,7 @@ const lightbox = new SimpleLightbox(`.gallery a`, {
 
 const refs = {
   form: document.querySelector(`.form`),
-  // button: document.querySelector(`.search-button`),
+  button: document.querySelector(`.search-button`),
   gallery: document.querySelector(`.gallery`),
   buttonLoadMore: document.querySelector(`.load-more`),
 };
@@ -36,19 +36,50 @@ function onFormSubmit(event) {
   // getImagesApiService.query = refs.form.searchQuery.value;
   getImagesApiService.query =
     event.currentTarget.elements.searchQuery.value.trim();
-  getImagesApiService.fetchImages(word).then(images => {
-    renderGallary(images);
-  });
+  hideButtonLoad();
+  clearGallery();
+
+  getImagesApiService.resetPage();
 
   if (getImagesApiService.query === ``) {
-    clearGallery();
-    hideButtonLoad();
     return;
   }
-  // getImagesApiService.resetPage();
-  // getImagesApiService.fetchImages(word);
 
-  // getImagesApiService.fetchImages(word).then(renderGallary);
+  getImagesApiService.fetchImages(word).then(images => {
+    if (images.length === 0) {
+      Notiflix.Notify.failure(
+        'Sorry, there are no images matching your search query. Please try again.'
+      );
+      hideButtonLoad();
+      clearGallery();
+      return;
+    }
+
+    if ((getImagesApiService.page = 1 && images.length !== 0)) {
+      Notiflix.Notify.success(
+        `Hooray! We found ${getImagesApiService.totalHits} images.`
+      );
+    }
+    renderGallary(images);
+  });
+}
+
+refs.buttonLoadMore.addEventListener(`click`, onButtonLoadMoreClick);
+
+function onButtonLoadMoreClick(event) {
+  event.preventDefault();
+  // console.log(`Жмем кнопку`);
+  getImagesApiService.fetchImages(word).then(images => {
+    const limit = getImagesApiService.totalHits;
+    if (getImagesApiService.page * getImagesApiService.per_page >= limit) {
+      console.log(`Вы достигли лимита`);
+      Notiflix.Notify.info(
+        `We're sorry, but you've reached the end of search results.`
+      );
+    }
+    renderGallary(images);
+    smoothScrolling();
+  });
 }
 
 refs.gallery.addEventListener(`click`, onGalleryClick);
@@ -75,33 +106,6 @@ function onGalleryClick(event) {
 
   ImgActive = nextImgActive.getAttribute(`src`);
   console.log(ImgActive);
-}
-
-refs.buttonLoadMore.addEventListener(`click`, onButtonLoadMoreClick);
-
-function onButtonLoadMoreClick(event) {
-  event.preventDefault();
-  console.log(`Жмем кнопку`);
-  getImagesApiService.fetchImages(word).then(images => {
-    renderGallary(images);
-  });
-
-  // getImagesApiService.resetPage();
-  // getImagesApiService
-  //   .fetchImages(word)
-  //   .then(renderGallary)
-  //   .then(smoothScrolling);
-
-  // getImagesApiService.fetchImages(word);
-  // getImagesApiService.renderGallary(images);
-  // smoothScrolling();
-
-  if (getImagesApiService.query === ``) {
-    clearGallery();
-    hideButtonLoad();
-    return;
-  }
-  // const buttonLoadMoreHidden = document.querySelector(`.not-visible`);
 }
 
 // ___________FUNCTIONS_______________
@@ -168,6 +172,8 @@ function hideButtonLoad() {
 function clearGallery() {
   refs.gallery.innerHTML = '';
 }
+
+// refs.buttonLoadMore.classList.add(`not-visible`);
 
 // let infScroll = new InfiniteScroll(refs.gallery, {
 //   // options
