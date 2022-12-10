@@ -31,6 +31,9 @@ let word = ``;
 function onFormSubmit(event) {
   event.preventDefault();
 
+  clearGallery();
+  hideButtonLoad();
+
   getImagesApiService.query =
     event.currentTarget.elements.searchQuery.value.trim();
 
@@ -57,10 +60,10 @@ function onFormSubmit(event) {
     }
 
     getImagesApiService.incrementPage();
-    console.log(`После запроса, если все ок - наш объект`, getImagesApiService);
 
     renderGallary(images);
     showButtonLoad();
+    console.log(`После запроса, если все ок - наш объект`, getImagesApiService);
   });
 }
 
@@ -69,9 +72,9 @@ refs.buttonLoadMore.addEventListener(`click`, onButtonLoadMoreClick);
 function onButtonLoadMoreClick(event) {
   const limit = getImagesApiService.totalHits;
 
-  console.log(getImagesApiService.page * getImagesApiService.per_page);
+  // console.log(getImagesApiService.page * getImagesApiService.per_page);
 
-  console.log(getImagesApiService.page);
+  // console.log(getImagesApiService.page);
 
   getImagesApiService.fetchImages(word).then(images => {
     if (getImagesApiService.page * getImagesApiService.per_page >= limit) {
