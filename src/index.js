@@ -1,12 +1,10 @@
 import axios from 'axios';
-// const axios = require('axios');
+
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import InfiniteScroll from 'infinite-scroll';
-// import InfiniteScroll from `infinite-scroll`;
+
 import GetImagesApiService from './apiService';
-// import OnlyScroll from 'only-scrollbar';
 
 const API_KEY = '31808257-b1d1bead71ab6681d9f118ecf';
 const BASE_URL = 'https://pixabay.com/api/';
@@ -33,11 +31,8 @@ let word = ``;
 function onFormSubmit(event) {
   event.preventDefault();
 
-  // getImagesApiService.query = refs.form.searchQuery.value;
   getImagesApiService.query =
     event.currentTarget.elements.searchQuery.value.trim();
-  hideButtonLoad();
-  clearGallery();
 
   getImagesApiService.resetPage();
 
@@ -60,6 +55,10 @@ function onFormSubmit(event) {
         `Hooray! We found ${getImagesApiService.totalHits} images.`
       );
     }
+
+    getImagesApiService.incrementPage();
+    console.log(`После запроса, если все ок - наш объект`, getImagesApiService);
+
     renderGallary(images);
   });
 }
@@ -68,15 +67,23 @@ refs.buttonLoadMore.addEventListener(`click`, onButtonLoadMoreClick);
 
 function onButtonLoadMoreClick(event) {
   event.preventDefault();
-  // console.log(`Жмем кнопку`);
+
+  console.log(getImagesApiService.page);
+
+  getImagesApiService.setLimiteImages;
+
+  const limit = getImagesApiService.totalHits;
+  console.log(getImagesApiService.page * getImagesApiService.per_page);
+  if (getImagesApiService.page * getImagesApiService.per_page >= limit) {
+    Notiflix.Notify.info(
+      `We're sorry, but you've reached the end of search results.`
+    );
+    console.log(`Вы достигли лимита`);
+  }
+
   getImagesApiService.fetchImages(word).then(images => {
-    const limit = getImagesApiService.totalHits;
-    if (getImagesApiService.page * getImagesApiService.per_page >= limit) {
-      console.log(`Вы достигли лимита`);
-      Notiflix.Notify.info(
-        `We're sorry, but you've reached the end of search results.`
-      );
-    }
+    getImagesApiService.incrementPage();
+    console.log(`После запроса, если все ок - наш объект`, getImagesApiService);
     renderGallary(images);
     smoothScrolling();
   });
@@ -172,8 +179,6 @@ function hideButtonLoad() {
 function clearGallery() {
   refs.gallery.innerHTML = '';
 }
-
-// refs.buttonLoadMore.classList.add(`not-visible`);
 
 // let infScroll = new InfiniteScroll(refs.gallery, {
 //   // options

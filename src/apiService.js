@@ -10,13 +10,6 @@ var lightbox = new SimpleLightbox(`.gallery a`, {
   captionDelay: `250 ms`,
 });
 
-// const refs = {
-//   form: document.querySelector(`.form`),
-//   // button: document.querySelector(`.search-button`),
-//   gallery: document.querySelector(`.gallery`),
-//   buttonLoadMore: document.querySelector(`.load-more`),
-// };
-
 export default class GetImagesApiService {
   constructor() {
     this.word = ``;
@@ -36,79 +29,16 @@ export default class GetImagesApiService {
         API_KEY +
         `&q=${this.word}&image_type=photo&orientation=horizontal&safesearch=true&per_page=${this.per_page}&page=${this.page}`
     );
+
     const images = response.data.hits;
 
-    // if (this.page === 1 && response.data.hits.length !== 0) {
-    //   Notiflix.Notify.success('Hooray! We found 500 images.');
-    // }
-
-    if (images) {
-      this.incrementPage();
-
-      console.log(`После запроса, если все ок - наш объект`, this);
-    }
-
-    // if ((response.data.hits = [])) {
-    //   Notiflix.Notify.failure(
-    //     'Sorry, there are no images matching your search query. Please try again.'
-    //   );
-    //   hideButtonLoad();
-    //   clearGallery();
-    //   return;
-    // }
-    // const limitImages = response.data.totalHits;
-
-    // console.log(this.page * this.per_page === limitImages);
-
-    // if (this.page * this.per_page >= limitImages) {
-    //   // console.log(`Вы достигли лимита`);
-    //   hideButtonLoad();
-    //   Notiflix.Notify.info(
-    //     `We're sorry, but you've reached the end of search results.`
-    //   );
+    // if (images) {
+    //   this.incrementPage();
+    //   console.log(`После запроса, если все ок - наш объект`, this);
     // }
 
     return images;
-
-    // return response.data.hits;
   }
-
-  // renderGallery(images) {
-  //   const markup = images
-  //     .map(image => {
-  //       return `<div class="galery__card">
-  //   <a class="gallery__link" href="${image.largeImageURL}">
-  //   <img class="gallery__image" src="${image.webformatURL}" alt="${image.tags}" title="${image.tags}" loading="lazy" />
-  //   <div class="info">
-  //     <p class="info__item">
-  //       <b class="info__item-name">Likes</b>${image.likes}
-  //     </p>
-  //     <p class="info__item">
-  //       <b class="info__item-name">Views</b>${image.views}
-  //     </p>
-  //     <p class="info__item">
-  //       <b class="info__item-name">Comments</b>${image.comments}
-  //     </p>
-  //     <p class="info__item">
-  //       <b class="info__item-name">Downloads</b>${image.downloads}
-  //     </p>
-  //   </div>
-  //   </a>
-  // </div>`;
-  //     })
-  //     .join(``);
-  //   refs.gallery.insertAdjacentHTML(`beforeend`, markup);
-  //   // refs.gallery.innerHTML = markup;
-  //   lightbox.refresh();
-  // }
-
-  // showButtonLoad() {
-  //   refs.buttonLoadMore.classList.remove(`not-visible`);
-  //   lightbox.refresh();
-  // }
-  // catch(error) {
-  //   Notiflix.Notify.failure('Error');
-  // }
 
   incrementPage() {
     this.page += 1;
@@ -118,7 +48,14 @@ export default class GetImagesApiService {
     this.page = 1;
   }
 
-  check() {}
+  // setLimiteImages() {
+  //   if (this.page * this.per_page >= this.totalHits) {
+  //     Notiflix.Notify.info(
+  //       `We're sorry, but you've reached the end of search results.`
+  //     );
+  //     refs.buttonLoadMore.classList.add(`not-visible`);
+  //   }
+  // }
 
   get query() {
     return this.word;
@@ -127,7 +64,72 @@ export default class GetImagesApiService {
   set query(newWord) {
     return (this.word = newWord);
   }
+
+  get totalPages() {
+    return this.totalPages;
+  }
 }
+
+// if (this.page === 1 && response.data.hits.length !== 0) {
+//   Notiflix.Notify.success('Hooray! We found 500 images.');
+// }
+
+// if ((response.data.hits = [])) {
+//   Notiflix.Notify.failure(
+//     'Sorry, there are no images matching your search query. Please try again.'
+//   );
+//   hideButtonLoad();
+//   clearGallery();
+//   return;
+// }
+// const limitImages = response.data.totalHits;
+
+// console.log(this.page * this.per_page === limitImages);
+
+// if (this.page * this.per_page >= limitImages) {
+//   // console.log(`Вы достигли лимита`);
+//   hideButtonLoad();
+//   Notiflix.Notify.info(
+//     `We're sorry, but you've reached the end of search results.`
+//   );
+// }
+
+// renderGallery(images) {
+//   const markup = images
+//     .map(image => {
+//       return `<div class="galery__card">
+//   <a class="gallery__link" href="${image.largeImageURL}">
+//   <img class="gallery__image" src="${image.webformatURL}" alt="${image.tags}" title="${image.tags}" loading="lazy" />
+//   <div class="info">
+//     <p class="info__item">
+//       <b class="info__item-name">Likes</b>${image.likes}
+//     </p>
+//     <p class="info__item">
+//       <b class="info__item-name">Views</b>${image.views}
+//     </p>
+//     <p class="info__item">
+//       <b class="info__item-name">Comments</b>${image.comments}
+//     </p>
+//     <p class="info__item">
+//       <b class="info__item-name">Downloads</b>${image.downloads}
+//     </p>
+//   </div>
+//   </a>
+// </div>`;
+//     })
+//     .join(``);
+//   refs.gallery.insertAdjacentHTML(`beforeend`, markup);
+//   // refs.gallery.innerHTML = markup;
+//   lightbox.refresh();
+// }
+
+// showButtonLoad() {
+//   refs.buttonLoadMore.classList.remove(`not-visible`);
+//   lightbox.refresh();
+// }
+// catch(error) {
+//   Notiflix.Notify.failure('Error');
+// }
 
 // function hideButtonLoad() {
 //   refs.buttonLoadMore.classList.add(`not-visible`);
