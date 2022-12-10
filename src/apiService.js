@@ -30,7 +30,7 @@ export default class GetImagesApiService {
         API_KEY +
         `&q=${this.word}&image_type=photo&orientation=horizontal&safesearch=true&per_page=${this.per_page}&page=${this.page}`
     );
-    if (this.page === 1) {
+    if (this.page === 1 && response.data.hits.length !== 0) {
       Notiflix.Notify.success('Hooray! We found 500 images.');
     }
 
@@ -43,10 +43,11 @@ export default class GetImagesApiService {
       );
     }
 
-    if (response.data.hits.length === 0) {
+    if ((response.data.hits = [])) {
       Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
+      hideButtonLoad();
       clearGallery();
       return;
     }
@@ -76,16 +77,6 @@ export default class GetImagesApiService {
   resetPage() {
     this.page = 1;
   }
-  // smoothScrolling() {
-  //   const { height: cardHeight } = document
-  //     .querySelector('.gallery')
-  //     .firstElementChild.getBoundingClientRect();
-
-  //   window.scrollBy({
-  //     top: cardHeight * 2,
-  //     behavior: 'smooth',
-  //   });
-  // }
 
   get query() {
     return this.word;
@@ -99,6 +90,21 @@ export default class GetImagesApiService {
 function hideButtonLoad() {
   refs.buttonLoadMore.classList.add(`not-visible`);
 }
+
+function clearGallery() {
+  refs.gallery.innerHTML = '';
+}
+
+// smoothScrolling() {
+//   const { height: cardHeight } = document
+//     .querySelector('.gallery')
+//     .firstElementChild.getBoundingClientRect();
+
+//   window.scrollBy({
+//     top: cardHeight * 2,
+//     behavior: 'smooth',
+//   });
+// }
 
 // console.log(document.querySelector('.gallery'));
 
@@ -134,7 +140,3 @@ function hideButtonLoad() {
 //     Notiflix.Notify.failure('Error');
 //   }
 // }
-
-function clearGallery() {
-  refs.gallery.innerHTML = '';
-}

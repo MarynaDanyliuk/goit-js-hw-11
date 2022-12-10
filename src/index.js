@@ -3,8 +3,10 @@ import axios from 'axios';
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-// import {getImagesApiService} from `./apiService`;
+import InfiniteScroll from 'infinite-scroll';
+// import InfiniteScroll from `infinite-scroll`;
 import GetImagesApiService from './apiService';
+// import OnlyScroll from 'only-scrollbar';
 
 const API_KEY = '31808257-b1d1bead71ab6681d9f118ecf';
 const BASE_URL = 'https://pixabay.com/api/';
@@ -25,20 +27,17 @@ let word = ``;
 function onFormSubmit(event) {
   event.preventDefault();
 
-  showButtonLoad();
-  // refs.buttonLoadMore.classList.remove(`not-visible`);
-  // clearGallery();
-
   // getImagesApiService.query = refs.form.searchQuery.value;
-  getImagesApiService.query = event.currentTarget.elements.searchQuery.value;
+  getImagesApiService.query =
+    event.currentTarget.elements.searchQuery.value.trim();
 
   if (getImagesApiService.query === ``) {
     clearGallery();
+    hideButtonLoad();
     return;
   }
   getImagesApiService.resetPage();
   getImagesApiService.fetchImages(word).then(renderGallary);
-  // .then(smoothScrolling);
 }
 
 function renderGallary(images) {
@@ -67,6 +66,7 @@ function renderGallary(images) {
     .join(``);
   refs.gallery.innerHTML = markup;
   lightbox.refresh();
+  showButtonLoad();
 }
 
 function smoothScrolling() {
@@ -112,6 +112,16 @@ var lightbox = new SimpleLightbox(`.gallery a`, {
   captionDelay: `250 ms`,
 });
 
+// let infScroll = new InfiniteScroll(refs.gallery, {
+//   // options
+//   // path: '.pagination__next',
+//   path: '.pagination__next',
+//   append: '.post',
+//   history: false,
+// });
+
+// console.log(infScroll);
+
 refs.buttonLoadMore.addEventListener(`click`, onButtonLoadMoreClick);
 
 function onButtonLoadMoreClick(event) {
@@ -125,6 +135,7 @@ function onButtonLoadMoreClick(event) {
 
   if (getImagesApiService.query === ``) {
     clearGallery();
+    hideButtonLoad();
     return;
   }
   // const buttonLoadMoreHidden = document.querySelector(`.not-visible`);
@@ -132,13 +143,38 @@ function onButtonLoadMoreClick(event) {
 
 function showButtonLoad() {
   refs.buttonLoadMore.classList.remove(`not-visible`);
-  // clearGallery();
   lightbox.refresh();
+}
+
+function hideButtonLoad() {
+  refs.buttonLoadMore.classList.add(`not-visible`);
 }
 
 function clearGallery() {
   refs.gallery.innerHTML = '';
 }
+
+// console.log(refs.gallery);
+// let elem = document.querySelector('.gallery');
+
+// const scroll = new OnlyScroll(document.querySelector('.gallery'));
+
+// function getImagePath() {
+//   const nextPenSlugs = [
+//     '3d9a3b8092ebcf9bc4a72672b81df1ac',
+//     '2cde50c59ea73c47aec5bd26343ce287',
+//     'd83110c5f71ea23ba5800b6b1a4a95c4',
+//   ];
+
+//   let slug = nextPenSlugs[this.loadCount];
+//   if (slug) return `/desandro/debug/${slug}`;
+// }
+
+// // element argument can be a selector string
+// //   for an individual element
+// let infScroll = new InfiniteScroll('.gallery', {
+//   // options
+// });
 
 // ___________FUNCTIONS__________________________
 
