@@ -28,7 +28,7 @@ refs.form.addEventListener(`submit`, onFormSubmit);
 
 let word = ``;
 
-function onFormSubmit(event) {
+async function onFormSubmit(event) {
   event.preventDefault();
 
   clearGallery();
@@ -42,8 +42,10 @@ function onFormSubmit(event) {
   if (getImagesApiService.query === ``) {
     return;
   }
+  // ________________FUNCTION async await___________________
+  try {
+    const images = await getImagesApiService.fetchImages(word);
 
-  getImagesApiService.fetchImages(word).then(images => {
     if (images.length === 0) {
       Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
@@ -57,26 +59,78 @@ function onFormSubmit(event) {
       Notiflix.Notify.success(
         `Hooray! We found ${getImagesApiService.totalHits} images.`
       );
+
+      getImagesApiService.incrementPage();
+
+      renderGallary(images);
+      showButtonLoad();
+      console.log(
+        `После запроса, если все ок - наш объект`,
+        getImagesApiService
+      );
     }
-
-    getImagesApiService.incrementPage();
-
-    renderGallary(images);
-    showButtonLoad();
-    console.log(`После запроса, если все ок - наш объект`, getImagesApiService);
-  });
+  } catch (error) {
+    console.log(`Error`);
+  }
+  // __________________________________________________
 }
+
+// ________FUNCTION Promise____________
+// getImagesApiService.fetchImages(word).then(images => {
+//   if (images.length === 0) {
+//     Notiflix.Notify.failure(
+//       'Sorry, there are no images matching your search query. Please try again.'
+//     );
+//     hideButtonLoad();
+//     clearGallery();
+//     return;
+//   }
+
+//   if ((getImagesApiService.page = 1 && images.length !== 0)) {
+//     Notiflix.Notify.success(
+//       `Hooray! We found ${getImagesApiService.totalHits} images.`
+//     );
+//   }
+
+//   getImagesApiService.incrementPage();
+
+//   renderGallary(images);
+//   showButtonLoad();
+//   console.log(`После запроса, если все ок - наш объект`, getImagesApiService);
+// });
+// ________________________________________
 
 refs.buttonLoadMore.addEventListener(`click`, onButtonLoadMoreClick);
 
-function onButtonLoadMoreClick(event) {
+async function onButtonLoadMoreClick(event) {
   const limit = getImagesApiService.totalHits;
-
+  // ________COUNTER___________________
   // console.log(getImagesApiService.page * getImagesApiService.per_page);
 
   // console.log(getImagesApiService.page);
+  // ______________________________________
 
-  getImagesApiService.fetchImages(word).then(images => {
+  // ___________FUNCTION Promise__________________
+  // getImagesApiService.fetchImages(word).then(images => {
+  //   if (getImagesApiService.page * getImagesApiService.per_page >= limit) {
+  //     Notiflix.Notify.info(
+  //       `We're sorry, but you've reached the end of search results.`
+  //     );
+  //     console.log(`Вы достигли лимита`);
+  //     hideButtonLoad();
+  //   }
+
+  //   getImagesApiService.incrementPage();
+  //   console.log(`После запроса, если все ок - наш объект`, getImagesApiService);
+  //   renderGallary(images);
+  //   smoothScrolling();
+  // });
+  // _________________________________________________
+
+  // ____________FUNCTION acync await_________________
+
+  try {
+    const images = await getImagesApiService.fetchImages(word);
     if (getImagesApiService.page * getImagesApiService.per_page >= limit) {
       Notiflix.Notify.info(
         `We're sorry, but you've reached the end of search results.`
@@ -89,8 +143,11 @@ function onButtonLoadMoreClick(event) {
     console.log(`После запроса, если все ок - наш объект`, getImagesApiService);
     renderGallary(images);
     smoothScrolling();
-  });
+  } catch (error) {
+    console.log(`Error`);
+  }
 }
+// ______________________________________________________
 
 refs.gallery.addEventListener(`click`, onGalleryClick);
 
